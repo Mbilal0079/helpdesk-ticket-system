@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Ticket</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Create Support Ticket</h2>
+
+    <div class="container">
+        <form method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <textarea name="issue" placeholder="Describe your issue" required></textarea>
+            <select name="priority">
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+            </select>
+            <button type="submit">Submit Ticket</button>
+        </form>
+
+        <br>
+        <a href="/">Back to Home</a>
+    </div>
+</body>
+</html>

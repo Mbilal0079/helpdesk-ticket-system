@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Tickets</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Submitted Tickets</h2>
+
+    <div class="container">
+        {% if tickets %}
+            {% for ticket in tickets %}
+                <div class="ticket">
+                    <p><strong>ID:</strong> {{ ticket.id }}</p>
+                    <p><strong>Name:</strong> {{ ticket.name }}</p>
+                    <p><strong>Email:</strong> {{ ticket.email }}</p>
+                    <p><strong>Issue:</strong> {{ ticket.issue }}</p>
+                    <p><strong>Priority:</strong> {{ ticket.priority }}</p>
+                    <p><strong>Status:</strong> {{ ticket.status }}</p>
+                    {% if ticket.status == "Open" %}
+                        <a href="/close/{{ ticket.id }}"><button>Close Ticket</button></a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No tickets submitted yet.</p>
+        {% endif %}
+
+        <a href="/">Back to Home</a>
+    </div>
+</body>
+</html>
+
+
