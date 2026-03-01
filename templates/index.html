@@ -1,13 +1,365 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helpdesk Ticket System</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #0a0a1a;
+            color: #fff;
+        }
+
+        /* ── Animated Gradient Background ── */
+        .bg-gradient {
+            position: fixed; inset: 0; z-index: -2;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e, #0f0c29);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+        }
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ── Floating Orbs ── */
+        .orb {
+            position: fixed; border-radius: 50%; filter: blur(80px);
+            z-index: -1; opacity: 0.4; animation: orbFloat 8s ease-in-out infinite;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #7c3aed; top: -100px; left: -100px; }
+        .orb-2 { width: 350px; height: 350px; background: #06b6d4; bottom: -80px; right: -80px; animation-delay: -3s; }
+        .orb-3 { width: 250px; height: 250px; background: #f43f5e; top: 50%; left: 60%; animation-delay: -6s; }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33%      { transform: translate(30px, -30px) scale(1.05); }
+            66%      { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* ── Particles ── */
+        .particles { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+        .particle {
+            position: absolute; width: 4px; height: 4px; background: rgba(255,255,255,0.3);
+            border-radius: 50%; animation: particleRise linear infinite;
+        }
+        @keyframes particleRise {
+            0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* ── Navbar ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            animation: slideDown 0.8s ease-out;
+        }
+        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .logo {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 1.4rem; font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .logo i { -webkit-text-fill-color: #7c3aed; font-size: 1.6rem; }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-links a {
+            padding: 10px 22px; border-radius: 12px; text-decoration: none; color: #c4b5fd;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .nav-links a:hover { color: #fff; background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.3); transform: translateY(-2px); }
+        .nav-links .btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff; border: none;
+        }
+        .nav-links .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.4); }
+
+        /* ── Hero Section ── */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 120px 20px 60px;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 20px; border-radius: 50px;
+            background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+            color: #c4b5fd; font-size: 0.85rem; font-weight: 500;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900;
+            line-height: 1.1; margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #7c3aed, #06b6d4, #f43f5e, #7c3aed);
+            background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: textGradient 5s ease infinite;
+        }
+        @keyframes textGradient {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .hero p {
+            font-size: 1.15rem; color: rgba(255,255,255,0.6); max-width: 550px;
+            line-height: 1.7; margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero-buttons {
+            display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 16px 36px; border-radius: 16px; font-size: 1rem;
+            font-weight: 600; text-decoration: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; border: none; position: relative; overflow: hidden;
+        }
+        .btn::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%); transition: transform 0.6s;
+        }
+        .btn:hover::after { transform: translateX(100%); }
+        .btn-glow {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff; box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+        }
+        .btn-glow:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 40px rgba(124,58,237,0.5); }
+        .btn-outline {
+            background: rgba(255,255,255,0.05); color: #c4b5fd;
+            border: 1.5px solid rgba(124,58,237,0.4);
+        }
+        .btn-outline:hover { background: rgba(124,58,237,0.15); transform: translateY(-3px); border-color: #7c3aed; color: #fff; }
+
+        /* ── Stats Section ── */
+        .stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; max-width: 900px; width: 100%; padding: 0 20px;
+            margin-top: 3rem;
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px; padding: 28px; text-align: center;
+            transition: all 0.4s ease; position: relative; overflow: hidden;
+        }
+        .stat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            border-radius: 20px 20px 0 0;
+        }
+        .stat-card:nth-child(1)::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+        .stat-card:nth-child(2)::before { background: linear-gradient(90deg, #22c55e, #4ade80); }
+        .stat-card:nth-child(3)::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .stat-card:nth-child(4)::before { background: linear-gradient(90deg, #f43f5e, #fb7185); }
+        .stat-card:hover { transform: translateY(-8px); border-color: rgba(124,58,237,0.3); background: rgba(255,255,255,0.07); }
+        .stat-icon {
+            width: 52px; height: 52px; border-radius: 14px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; margin-bottom: 14px;
+        }
+        .stat-card:nth-child(1) .stat-icon { background: rgba(124,58,237,0.2); color: #a78bfa; }
+        .stat-card:nth-child(2) .stat-icon { background: rgba(34,197,94,0.2); color: #4ade80; }
+        .stat-card:nth-child(3) .stat-icon { background: rgba(59,130,246,0.2); color: #60a5fa; }
+        .stat-card:nth-child(4) .stat-icon { background: rgba(244,63,94,0.2); color: #fb7185; }
+        .stat-number {
+            font-size: 2.2rem; font-weight: 800; margin-bottom: 4px;
+            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.7));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ── Features Section ── */
+        .features {
+            max-width: 1000px; margin: 80px auto; padding: 0 20px;
+        }
+        .features h2 {
+            text-align: center; font-size: 2rem; font-weight: 800; margin-bottom: 3rem;
+        }
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px; padding: 32px;
+            transition: all 0.4s ease;
+            opacity: 0; transform: translateY(40px);
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        .feature-card:nth-child(1) { animation-delay: 1.2s; }
+        .feature-card:nth-child(2) { animation-delay: 1.4s; }
+        .feature-card:nth-child(3) { animation-delay: 1.6s; }
+        .feature-card:hover { transform: translateY(-6px); border-color: rgba(124,58,237,0.3); background: rgba(255,255,255,0.07); }
+        .feature-icon {
+            width: 56px; height: 56px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; margin-bottom: 20px;
+            background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.2));
+            color: #a78bfa;
+        }
+        .feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+        .feature-card p { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center; padding: 40px 20px;
+            color: rgba(255,255,255,0.3); font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .nav-links a span { display: none; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .hero-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Helpdesk Ticket System</h1>
-    <p>This is your home page.</p>
-    <a href="/create">Create Ticket</a> |
-    <a href="/tickets">View Tickets</a>
+    <div class="bg-gradient"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-headset"></i>
+            HelpDesk
+        </div>
+        <div class="nav-links">
+            <a href="/tickets"><i class="fas fa-ticket-alt"></i> <span>Tickets</span></a>
+            <a href="/create" class="btn-primary"><i class="fas fa-plus"></i> <span>New Ticket</span></a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            System Online
+        </div>
+        <h1>
+            Online <span class="gradient-text">Ticket Booking</span><br>
+            System
+        </h1>
+        <p>
+            Create, track, and manage support tickets effortlessly.
+            A modern helpdesk system designed for speed and simplicity.
+        </p>
+        <div class="hero-buttons">
+            <a href="/create" class="btn btn-glow">
+                <i class="fas fa-plus-circle"></i> Create Ticket
+            </a>
+            <a href="/tickets" class="btn btn-outline">
+                <i class="fas fa-list-ul"></i> View Tickets
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+                <div class="stat-number" data-count="{{ stats.total }}">{{ stats.total }}</div>
+                <div class="stat-label">Total Tickets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-envelope-open"></i></div>
+                <div class="stat-number" data-count="{{ stats.open }}">{{ stats.open }}</div>
+                <div class="stat-label">Open</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-number" data-count="{{ stats.closed }}">{{ stats.closed }}</div>
+                <div class="stat-label">Closed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-number" data-count="{{ stats.high }}">{{ stats.high }}</div>
+                <div class="stat-label">High Priority</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <h2>Why Use <span style="background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">HelpDesk</span>?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Lightning Fast</h3>
+                <p>Create and manage tickets in seconds. No clutter, no confusion — just a clean workflow.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-filter"></i></div>
+                <h3>Smart Filtering</h3>
+                <p>Filter tickets by status and priority to find exactly what you need instantly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Priority Tracking</h3>
+                <p>Color-coded priorities help you focus on what matters most — High, Medium, or Low.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 HelpDesk Ticket System — Built with ❤️</p>
+    </footer>
+
+    <script>
+        // Create floating particles
+        const container = document.getElementById('particles');
+        for (let i = 0; i < 40; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            p.style.left = Math.random() * 100 + '%';
+            p.style.width = p.style.height = (Math.random() * 4 + 2) + 'px';
+            p.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            p.style.animationDelay = (Math.random() * 8) + 's';
+            container.appendChild(p);
+        }
+
+        // Animate stat numbers counting up
+        document.querySelectorAll('.stat-number').forEach(el => {
+            const target = parseInt(el.getAttribute('data-count'));
+            let current = 0;
+            const step = Math.max(1, Math.ceil(target / 30));
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) { current = target; clearInterval(timer); }
+                el.textContent = current;
+            }, 40);
+        });
+    </script>
 </body>
 </html>

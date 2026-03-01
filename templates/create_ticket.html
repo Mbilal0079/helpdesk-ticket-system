@@ -1,27 +1,266 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Create Ticket</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Ticket — HelpDesk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+            background: #0a0a1a; color: #fff;
+        }
+
+        /* ── Background ── */
+        .bg-gradient {
+            position: fixed; inset: 0; z-index: -2;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e, #0f0c29);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+        }
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.35; animation: orbFloat 8s ease-in-out infinite; }
+        .orb-1 { width: 350px; height: 350px; background: #7c3aed; top: -80px; right: -80px; }
+        .orb-2 { width: 300px; height: 300px; background: #06b6d4; bottom: -60px; left: -60px; animation-delay: -4s; }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            50% { transform: translate(20px,-20px) scale(1.05); }
+        }
+
+        /* ── Navbar ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            backdrop-filter: blur(20px); background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            animation: slideDown 0.8s ease-out;
+        }
+        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .logo {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 1.4rem; font-weight: 800; text-decoration: none;
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .logo i { -webkit-text-fill-color: #7c3aed; font-size: 1.6rem; }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-links a {
+            padding: 10px 22px; border-radius: 12px; text-decoration: none; color: #c4b5fd;
+            font-weight: 500; font-size: 0.9rem; transition: all 0.3s ease; border: 1px solid transparent;
+        }
+        .nav-links a:hover { color: #fff; background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.3); transform: translateY(-2px); }
+
+        /* ── Main ── */
+        .page-wrapper {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 120px 20px 60px;
+        }
+        .form-container {
+            width: 100%; max-width: 580px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 28px; padding: 48px; position: relative; overflow: hidden;
+            animation: scaleIn 0.6s ease-out;
+        }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.92) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .form-container::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #7c3aed, #06b6d4, #f43f5e);
+            animation: borderGlow 3s ease infinite;
+            background-size: 200% 100%;
+        }
+        @keyframes borderGlow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+        .form-header { text-align: center; margin-bottom: 36px; }
+        .form-header .icon-circle {
+            width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 20px;
+            background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.2));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: #a78bfa;
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+        @keyframes iconPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+        .form-header h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+        .form-header p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+
+        /* ── Form Fields ── */
+        .form-group {
+            margin-bottom: 22px; position: relative;
+            opacity: 0; transform: translateY(20px);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+        .form-group:nth-child(1) { animation-delay: 0.3s; }
+        .form-group:nth-child(2) { animation-delay: 0.4s; }
+        .form-group:nth-child(3) { animation-delay: 0.5s; }
+        .form-group:nth-child(4) { animation-delay: 0.6s; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        .form-group label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.7);
+            margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .form-group label i { color: #7c3aed; font-size: 0.8rem; }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%; padding: 14px 18px; border-radius: 14px;
+            background: rgba(255,255,255,0.06); color: #fff;
+            border: 1.5px solid rgba(255,255,255,0.1);
+            font-family: 'Inter', sans-serif; font-size: 0.95rem;
+            transition: all 0.3s ease; outline: none;
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #7c3aed;
+            background: rgba(124,58,237,0.08);
+            box-shadow: 0 0 0 4px rgba(124,58,237,0.15);
+        }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .form-group select option { background: #1a1a2e; color: #fff; }
+
+        /* Priority selector */
+        .priority-options {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+        }
+        .priority-option {
+            position: relative;
+        }
+        .priority-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+        .priority-option label {
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            padding: 16px 10px; border-radius: 14px; cursor: pointer;
+            background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease; text-transform: none; letter-spacing: 0; font-size: 0.85rem;
+            justify-content: center;
+        }
+        .priority-option label .p-icon { font-size: 1.2rem; }
+        .priority-option input:checked + label {
+            border-width: 2px;
+        }
+        .priority-option:nth-child(1) input:checked + label { border-color: #22c55e; background: rgba(34,197,94,0.12); color: #4ade80; }
+        .priority-option:nth-child(2) input:checked + label { border-color: #f59e0b; background: rgba(245,158,11,0.12); color: #fbbf24; }
+        .priority-option:nth-child(3) input:checked + label { border-color: #ef4444; background: rgba(239,68,68,0.12); color: #f87171; }
+        .priority-option label:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%; padding: 16px; border: none; border-radius: 16px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff; font-family: 'Inter', sans-serif;
+            font-size: 1rem; font-weight: 700; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-top: 28px; position: relative; overflow: hidden;
+            opacity: 0; animation: fadeInUp 0.5s ease-out 0.7s forwards;
+        }
+        .submit-btn::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: translateX(-100%); transition: transform 0.6s;
+        }
+        .submit-btn:hover::after { transform: translateX(100%); }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(124,58,237,0.4); }
+        .submit-btn:active { transform: translateY(-1px); }
+
+        .back-link {
+            display: block; text-align: center; margin-top: 20px;
+            color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.9rem;
+            transition: color 0.3s; opacity: 0; animation: fadeInUp 0.5s ease-out 0.8s forwards;
+        }
+        .back-link:hover { color: #a78bfa; }
+
+        @media (max-width: 640px) {
+            .form-container { padding: 32px 24px; margin: 0 10px; }
+            .priority-options { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
 </head>
 <body>
-    <h2>Create Support Ticket</h2>
+    <div class="bg-gradient"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-    <div class="container">
-        <form method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <textarea name="issue" placeholder="Describe your issue" required></textarea>
-            <select name="priority">
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-            </select>
-            <button type="submit">Submit Ticket</button>
-        </form>
+    <nav>
+        <a href="/" class="logo"><i class="fas fa-headset"></i> HelpDesk</a>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/tickets"><i class="fas fa-ticket-alt"></i> Tickets</a>
+        </div>
+    </nav>
 
-        <br>
-        <a href="/">Back to Home</a>
+    <div class="page-wrapper">
+        <div class="form-container">
+            <div class="form-header">
+                <div class="icon-circle"><i class="fas fa-plus-circle"></i></div>
+                <h2>Create New Ticket</h2>
+                <p>Fill in the details below and we'll get on it!</p>
+            </div>
+
+            <form method="POST" id="ticketForm">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Your Name</label>
+                    <input type="text" name="name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" name="email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-comment-dots"></i> Describe the Issue</label>
+                    <textarea name="issue" placeholder="Tell us what happened..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-flag"></i> Priority Level</label>
+                    <div class="priority-options">
+                        <div class="priority-option">
+                            <input type="radio" name="priority" value="Low" id="low" checked>
+                            <label for="low"><span class="p-icon">🟢</span> Low</label>
+                        </div>
+                        <div class="priority-option">
+                            <input type="radio" name="priority" value="Medium" id="medium">
+                            <label for="medium"><span class="p-icon">🟡</span> Medium</label>
+                        </div>
+                        <div class="priority-option">
+                            <input type="radio" name="priority" value="High" id="high">
+                            <label for="high"><span class="p-icon">🔴</span> High</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Ticket
+                </button>
+            </form>
+            <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
     </div>
+
+    <script>
+        // Add ripple effect on button click
+        document.querySelector('.submit-btn').addEventListener('click', function(e) {
+            const btn = this;
+            btn.style.transform = 'scale(0.96)';
+            setTimeout(() => btn.style.transform = '', 150);
+        });
+
+        // Field focus glow
+        document.querySelectorAll('input, textarea').forEach(el => {
+            el.addEventListener('focus', () => el.parentElement.style.transform = 'scale(1.01)');
+            el.addEventListener('blur', () => el.parentElement.style.transform = 'scale(1)');
+        });
+    </script>
 </body>
 </html>
