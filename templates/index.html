@@ -13,14 +13,14 @@
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
-            background: #0a0a1a;
-            color: #fff;
+            background: #f8f9fc;
+            color: #1e1e2e;
         }
 
         /* ── Animated Gradient Background ── */
         .bg-gradient {
             position: fixed; inset: 0; z-index: -2;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e, #0f0c29);
+            background: linear-gradient(135deg, #e8e0f7, #d5e8f7, #f0e6f6, #e8e0f7);
             background-size: 400% 400%;
             animation: gradientShift 12s ease infinite;
         }
@@ -35,9 +35,9 @@
             position: fixed; border-radius: 50%; filter: blur(80px);
             z-index: -1; opacity: 0.4; animation: orbFloat 8s ease-in-out infinite;
         }
-        .orb-1 { width: 400px; height: 400px; background: #7c3aed; top: -100px; left: -100px; }
-        .orb-2 { width: 350px; height: 350px; background: #06b6d4; bottom: -80px; right: -80px; animation-delay: -3s; }
-        .orb-3 { width: 250px; height: 250px; background: #f43f5e; top: 50%; left: 60%; animation-delay: -6s; }
+        .orb-1 { width: 400px; height: 400px; background: #c4b5fd; top: -100px; left: -100px; }
+        .orb-2 { width: 350px; height: 350px; background: #a5f3fc; bottom: -80px; right: -80px; animation-delay: -3s; }
+        .orb-3 { width: 250px; height: 250px; background: #fda4af; top: 50%; left: 60%; animation-delay: -6s; }
         @keyframes orbFloat {
             0%, 100% { transform: translate(0, 0) scale(1); }
             33%      { transform: translate(30px, -30px) scale(1.05); }
@@ -47,7 +47,7 @@
         /* ── Particles ── */
         .particles { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
         .particle {
-            position: absolute; width: 4px; height: 4px; background: rgba(255,255,255,0.3);
+            position: absolute; width: 4px; height: 4px; background: rgba(124,58,237,0.2);
             border-radius: 50%; animation: particleRise linear infinite;
         }
         @keyframes particleRise {
@@ -61,8 +61,8 @@
         nav {
             position: fixed; top: 0; width: 100%; z-index: 100;
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            background: rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.75);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
             padding: 1rem 2rem;
             display: flex; justify-content: space-between; align-items: center;
             animation: slideDown 0.8s ease-out;
@@ -70,18 +70,18 @@
         @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .logo {
             display: flex; align-items: center; gap: 12px;
-            font-size: 1.4rem; font-weight: 800;
+            font-size: 1.4rem; font-weight: 800; text-decoration: none;
             background: linear-gradient(135deg, #7c3aed, #06b6d4);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .logo i { -webkit-text-fill-color: #7c3aed; font-size: 1.6rem; }
         .nav-links { display: flex; gap: 8px; }
         .nav-links a {
-            padding: 10px 22px; border-radius: 12px; text-decoration: none; color: #c4b5fd;
+            padding: 10px 22px; border-radius: 12px; text-decoration: none; color: #6b7280;
             font-weight: 500; font-size: 0.9rem; transition: all 0.3s ease;
             border: 1px solid transparent;
         }
-        .nav-links a:hover { color: #fff; background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.3); transform: translateY(-2px); }
+        .nav-links a:hover { color: #7c3aed; background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.2); transform: translateY(-2px); }
         .nav-links .btn-primary {
             background: linear-gradient(135deg, #7c3aed, #6d28d9);
             color: #fff; border: none;
@@ -97,8 +97,8 @@
         .hero-badge {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 8px 20px; border-radius: 50px;
-            background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
-            color: #c4b5fd; font-size: 0.85rem; font-weight: 500;
+            background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.2);
+            color: #7c3aed; font-size: 0.85rem; font-weight: 500;
             margin-bottom: 2rem;
             animation: fadeInUp 0.8s ease-out 0.2s both;
         }
@@ -121,7 +121,7 @@
             100% { background-position: 0% 50%; }
         }
         .hero p {
-            font-size: 1.15rem; color: rgba(255,255,255,0.6); max-width: 550px;
+            font-size: 1.15rem; color: #6b7280; max-width: 550px;
             line-height: 1.7; margin-bottom: 2.5rem;
             animation: fadeInUp 0.8s ease-out 0.6s both;
         }
@@ -151,10 +151,10 @@
         }
         .btn-glow:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 40px rgba(124,58,237,0.5); }
         .btn-outline {
-            background: rgba(255,255,255,0.05); color: #c4b5fd;
-            border: 1.5px solid rgba(124,58,237,0.4);
+            background: rgba(255,255,255,0.8); color: #7c3aed;
+            border: 1.5px solid rgba(124,58,237,0.3);
         }
-        .btn-outline:hover { background: rgba(124,58,237,0.15); transform: translateY(-3px); border-color: #7c3aed; color: #fff; }
+        .btn-outline:hover { background: rgba(124,58,237,0.1); transform: translateY(-3px); border-color: #7c3aed; color: #6d28d9; }
 
         /* ── Stats Section ── */
         .stats {
@@ -164,11 +164,12 @@
             animation: fadeInUp 0.8s ease-out 1s both;
         }
         .stat-card {
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.7);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(0,0,0,0.06);
             border-radius: 20px; padding: 28px; text-align: center;
             transition: all 0.4s ease; position: relative; overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
         .stat-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -178,7 +179,7 @@
         .stat-card:nth-child(2)::before { background: linear-gradient(90deg, #22c55e, #4ade80); }
         .stat-card:nth-child(3)::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
         .stat-card:nth-child(4)::before { background: linear-gradient(90deg, #f43f5e, #fb7185); }
-        .stat-card:hover { transform: translateY(-8px); border-color: rgba(124,58,237,0.3); background: rgba(255,255,255,0.07); }
+        .stat-card:hover { transform: translateY(-8px); border-color: rgba(124,58,237,0.3); background: rgba(255,255,255,0.9); box-shadow: 0 12px 40px rgba(124,58,237,0.1); }
         .stat-icon {
             width: 52px; height: 52px; border-radius: 14px;
             display: inline-flex; align-items: center; justify-content: center;
@@ -190,10 +191,10 @@
         .stat-card:nth-child(4) .stat-icon { background: rgba(244,63,94,0.2); color: #fb7185; }
         .stat-number {
             font-size: 2.2rem; font-weight: 800; margin-bottom: 4px;
-            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.7));
+            background: linear-gradient(135deg, #1e1e2e, #4b5563);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.5); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-label { font-size: 0.85rem; color: #9ca3af; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
 
         /* ── Features Section ── */
         .features {
@@ -206,18 +207,19 @@
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
         }
         .feature-card {
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(0,0,0,0.06);
             border-radius: 20px; padding: 32px;
             transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
             opacity: 0; transform: translateY(40px);
             animation: fadeInUp 0.8s ease-out forwards;
         }
         .feature-card:nth-child(1) { animation-delay: 1.2s; }
         .feature-card:nth-child(2) { animation-delay: 1.4s; }
         .feature-card:nth-child(3) { animation-delay: 1.6s; }
-        .feature-card:hover { transform: translateY(-6px); border-color: rgba(124,58,237,0.3); background: rgba(255,255,255,0.07); }
+        .feature-card:hover { transform: translateY(-6px); border-color: rgba(124,58,237,0.3); background: rgba(255,255,255,0.9); box-shadow: 0 12px 40px rgba(124,58,237,0.1); }
         .feature-icon {
             width: 56px; height: 56px; border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
@@ -226,14 +228,17 @@
             color: #a78bfa;
         }
         .feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
-        .feature-card p { font-size: 0.9rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+        .feature-card p { font-size: 0.9rem; color: #6b7280; line-height: 1.6; }
 
         /* ── Footer ── */
         footer {
             text-align: center; padding: 40px 20px;
-            color: rgba(255,255,255,0.3); font-size: 0.85rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            color: #9ca3af; font-size: 0.85rem;
+            border-top: 1px solid rgba(0,0,0,0.06);
         }
+        .flash-success { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #16a34a; }
+        .flash-info    { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #3b82f6; }
+        .flash-warning { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: #d97706; }
 
         /* ── Responsive ── */
         @media (max-width: 640px) {
@@ -252,15 +257,37 @@
 
     <!-- Navbar -->
     <nav>
-        <div class="logo">
+        <a href="/" class="logo">
             <i class="fas fa-headset"></i>
             HelpDesk
-        </div>
+        </a>
         <div class="nav-links">
-            <a href="/tickets"><i class="fas fa-ticket-alt"></i> <span>Tickets</span></a>
-            <a href="/create" class="btn-primary"><i class="fas fa-plus"></i> <span>New Ticket</span></a>
+            {% if session.get('user_id') %}
+                <a href="/tickets"><i class="fas fa-ticket-alt"></i> <span>Tickets</span></a>
+                <a href="/create" class="btn-primary"><i class="fas fa-plus"></i> <span>New Ticket</span></a>
+                {% if session.get('role') == 'admin' %}
+                <a href="/admin"><i class="fas fa-shield-alt"></i> <span>Admin</span></a>
+                {% endif %}
+                <a href="/logout" style="color:#f43f5e;"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+            {% else %}
+                <a href="/login"><i class="fas fa-sign-in-alt"></i> <span>Login</span></a>
+                <a href="/register" class="btn-primary"><i class="fas fa-user-plus"></i> <span>Register</span></a>
+            {% endif %}
         </div>
     </nav>
+
+    <!-- Flash Messages -->
+    <div style="position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:200;width:90%;max-width:500px;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}" style="padding:14px 22px;border-radius:14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:500;backdrop-filter:blur(10px);animation:fadeInUp 0.5s ease-out;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
 
     <!-- Hero -->
     <section class="hero">
@@ -359,6 +386,16 @@
                 if (current >= target) { current = target; clearInterval(timer); }
                 el.textContent = current;
             }, 40);
+        });
+
+        // Auto-dismiss flash messages
+        document.querySelectorAll('.flash').forEach(el => {
+            setTimeout(() => {
+                el.style.transition = 'all 0.5s ease';
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(-10px)';
+                setTimeout(() => el.remove(), 500);
+            }, 4000);
         });
     </script>
 </body>

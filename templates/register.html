@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — HelpDesk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; background: #f8f9fc; color: #1e1e2e; }
+        .bg-gradient { position: fixed; inset: 0; z-index: -2; background: linear-gradient(135deg, #e8e0f7, #d5e8f7, #f0e6f6, #e8e0f7); background-size: 400% 400%; animation: gradientShift 12s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.35; animation: orbFloat 8s ease-in-out infinite; }
+        .orb-1 { width: 350px; height: 350px; background: #c4b5fd; top: -80px; right: -80px; }
+        .orb-2 { width: 300px; height: 300px; background: #fda4af; bottom: -60px; left: -60px; animation-delay: -4s; }
+        @keyframes orbFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(20px,-20px) scale(1.05); } }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; backdrop-filter: blur(20px); background: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(0,0,0,0.06); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; animation: slideDown 0.8s ease-out; }
+        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.4rem; font-weight: 800; text-decoration: none; background: linear-gradient(135deg, #7c3aed, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo i { -webkit-text-fill-color: #7c3aed; font-size: 1.6rem; }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-links a { padding: 10px 22px; border-radius: 12px; text-decoration: none; color: #6b7280; font-weight: 500; font-size: 0.9rem; transition: all 0.3s ease; border: 1px solid transparent; }
+        .nav-links a:hover { color: #7c3aed; background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.2); transform: translateY(-2px); }
+        .nav-links .btn-primary { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border: none; -webkit-text-fill-color: #fff; }
+
+        .page-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 20px 60px; }
+        .form-container { width: 100%; max-width: 480px; background: rgba(255,255,255,0.8); backdrop-filter: blur(30px); border: 1px solid rgba(0,0,0,0.06); border-radius: 28px; padding: 48px; position: relative; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.06); animation: scaleIn 0.6s ease-out; }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.92) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .form-container::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #22c55e, #06b6d4, #7c3aed); animation: borderGlow 3s ease infinite; background-size: 200% 100%; }
+        @keyframes borderGlow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+        .form-header { text-align: center; margin-bottom: 36px; }
+        .form-header .icon-circle { width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(6,182,212,0.2)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #22c55e; animation: iconPulse 2s ease-in-out infinite; }
+        @keyframes iconPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+        .form-header h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+        .form-header p { color: #6b7280; font-size: 0.9rem; }
+
+        .flash { padding: 12px 18px; border-radius: 12px; margin-bottom: 20px; font-size: 0.9rem; font-weight: 500; animation: flashIn 0.5s ease-out; }
+        @keyframes flashIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .flash-success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: #16a34a; }
+        .flash-warning { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); color: #d97706; }
+
+        .form-group { margin-bottom: 22px; position: relative; opacity: 0; transform: translateY(20px); animation: fadeInUp 0.5s ease-out forwards; }
+        .form-group:nth-child(1) { animation-delay: 0.3s; }
+        .form-group:nth-child(2) { animation-delay: 0.4s; }
+        .form-group:nth-child(3) { animation-delay: 0.5s; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .form-group label { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: #4b5563; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group label i { color: #7c3aed; font-size: 0.8rem; }
+        .form-group input { width: 100%; padding: 14px 18px; border-radius: 14px; background: rgba(255,255,255,0.6); color: #1e1e2e; border: 1.5px solid rgba(0,0,0,0.1); font-family: 'Inter', sans-serif; font-size: 0.95rem; transition: all 0.3s ease; outline: none; }
+        .form-group input::placeholder { color: #9ca3af; }
+        .form-group input:focus { border-color: #7c3aed; background: rgba(124,58,237,0.04); box-shadow: 0 0 0 4px rgba(124,58,237,0.15); }
+
+        .submit-btn { width: 100%; padding: 16px; border: none; border-radius: 16px; background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 28px; position: relative; overflow: hidden; opacity: 0; animation: fadeInUp 0.5s ease-out 0.6s forwards; }
+        .submit-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255,255,255,0.15), transparent); transform: translateX(-100%); transition: transform 0.6s; }
+        .submit-btn:hover::after { transform: translateX(100%); }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(34,197,94,0.4); }
+
+        .form-footer { text-align: center; margin-top: 24px; font-size: 0.9rem; color: #6b7280; opacity: 0; animation: fadeInUp 0.5s ease-out 0.7s forwards; }
+        .form-footer a { color: #7c3aed; font-weight: 600; text-decoration: none; transition: color 0.3s; }
+        .form-footer a:hover { color: #6d28d9; }
+
+        .password-hint { font-size: 0.78rem; color: #9ca3af; margin-top: 6px; }
+
+        @media (max-width: 640px) { .form-container { padding: 32px 24px; margin: 0 10px; } }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <nav>
+        <a href="/" class="logo"><i class="fas fa-headset"></i> HelpDesk</a>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/login" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Login</a>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="form-container">
+            <div class="form-header">
+                <div class="icon-circle"><i class="fas fa-user-plus"></i></div>
+                <h2>Create Account</h2>
+                <p>Join HelpDesk and start managing your tickets</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Full Name</label>
+                    <input type="text" name="name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email Address</label>
+                    <input type="email" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" name="password" placeholder="••••••••" required minlength="4">
+                    <div class="password-hint">Minimum 4 characters</div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-user-check"></i> Create Account
+                </button>
+            </form>
+            <div class="form-footer">
+                Already have an account? <a href="/login">Sign in</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

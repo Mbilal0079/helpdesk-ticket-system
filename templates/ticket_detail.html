@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket #{{ ticket.id }} — HelpDesk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; background: #f8f9fc; color: #1e1e2e; }
+        .bg-gradient { position: fixed; inset: 0; z-index: -2; background: linear-gradient(135deg, #e8e0f7, #d5e8f7, #f0e6f6, #e8e0f7); background-size: 400% 400%; animation: gradientShift 12s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.35; animation: orbFloat 8s ease-in-out infinite; }
+        .orb-1 { width: 350px; height: 350px; background: #c4b5fd; top: -80px; left: -80px; }
+        .orb-2 { width: 300px; height: 300px; background: #a5f3fc; bottom: -60px; right: -60px; animation-delay: -4s; }
+        @keyframes orbFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(20px,-20px) scale(1.05); } }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 100; backdrop-filter: blur(20px); background: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(0,0,0,0.06); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; animation: slideDown 0.8s ease-out; }
+        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.4rem; font-weight: 800; text-decoration: none; background: linear-gradient(135deg, #7c3aed, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo i { -webkit-text-fill-color: #7c3aed; font-size: 1.6rem; }
+        .nav-links { display: flex; gap: 8px; align-items: center; }
+        .nav-links a { padding: 10px 22px; border-radius: 12px; text-decoration: none; color: #6b7280; font-weight: 500; font-size: 0.9rem; transition: all 0.3s ease; border: 1px solid transparent; }
+        .nav-links a:hover { color: #7c3aed; background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.2); transform: translateY(-2px); }
+        .user-badge { display: flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 50px; background: rgba(124,58,237,0.08); color: #7c3aed; font-weight: 600; font-size: 0.85rem; }
+
+        .page { max-width: 800px; margin: 0 auto; padding: 110px 20px 60px; }
+
+        .flash { padding: 12px 18px; border-radius: 12px; margin-bottom: 20px; font-size: 0.9rem; font-weight: 500; animation: flashIn 0.5s ease-out; }
+        @keyframes flashIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .flash-success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: #16a34a; }
+        .flash-warning { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); color: #d97706; }
+        .flash-info    { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3); color: #2563eb; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Ticket Detail Card */
+        .ticket-detail { background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); border: 1px solid rgba(0,0,0,0.06); border-radius: 24px; padding: 36px; box-shadow: 0 8px 40px rgba(0,0,0,0.06); position: relative; overflow: hidden; animation: fadeInUp 0.6s ease-out; margin-bottom: 30px; }
+        .ticket-detail::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 5px; }
+        .ticket-detail.priority-low::before { background: linear-gradient(180deg, #22c55e, #16a34a); }
+        .ticket-detail.priority-medium::before { background: linear-gradient(180deg, #f59e0b, #d97706); }
+        .ticket-detail.priority-high::before { background: linear-gradient(180deg, #ef4444, #dc2626); }
+
+        .detail-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+        .detail-header h1 { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 12px; }
+        .detail-header h1 .ticket-num { color: #7c3aed; }
+        .status-badge { padding: 6px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; }
+        .status-open { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.3); }
+        .status-closed { background: rgba(100,116,139,0.12); color: #64748b; border: 1px solid rgba(100,116,139,0.3); }
+        .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+        .status-open .status-dot { background: #22c55e; animation: pulse 2s infinite; }
+        .status-closed .status-dot { background: #64748b; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        .detail-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .meta-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 14px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.04); }
+        .meta-item i { color: #7c3aed; font-size: 0.9rem; width: 20px; }
+        .meta-item .meta-label { font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .meta-item .meta-value { font-size: 0.9rem; font-weight: 600; color: #1e1e2e; }
+
+        .priority-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
+        .priority-low { background: rgba(34,197,94,0.12); color: #16a34a; }
+        .priority-medium { background: rgba(245,158,11,0.12); color: #d97706; }
+        .priority-high { background: rgba(239,68,68,0.12); color: #dc2626; }
+        .category-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; background: rgba(59,130,246,0.1); color: #2563eb; }
+
+        .issue-block { margin-top: 20px; }
+        .issue-block h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; margin-bottom: 10px; font-weight: 700; }
+        .issue-text { font-size: 0.95rem; color: #4b5563; line-height: 1.8; background: rgba(124,58,237,0.03); padding: 20px; border-radius: 16px; border-left: 4px solid rgba(124,58,237,0.3); }
+
+        .detail-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+        .detail-actions a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 14px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; }
+        .btn-close-ticket { background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.3); }
+        .btn-close-ticket:hover { background: rgba(245,158,11,0.25); transform: translateY(-2px); }
+        .btn-reopen { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.3); }
+        .btn-reopen:hover { background: rgba(34,197,94,0.25); transform: translateY(-2px); }
+        .btn-delete { background: rgba(239,68,68,0.1); color: #dc2626; border: 1px solid rgba(239,68,68,0.2); }
+        .btn-delete:hover { background: rgba(239,68,68,0.25); transform: translateY(-2px); }
+        .btn-back { background: rgba(0,0,0,0.04); color: #6b7280; border: 1px solid rgba(0,0,0,0.08); }
+        .btn-back:hover { background: rgba(0,0,0,0.08); transform: translateY(-2px); }
+
+        /* Comments Section */
+        .comments-section { animation: fadeInUp 0.6s ease-out 0.2s both; }
+        .comments-section h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .comments-section h2 .count { font-size: 0.85rem; padding: 2px 10px; border-radius: 50px; background: rgba(124,58,237,0.1); color: #7c3aed; font-weight: 700; }
+
+        .comment { background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.05); border-radius: 16px; padding: 20px; margin-bottom: 14px; transition: all 0.3s ease; animation: fadeInUp 0.4s ease-out both; }
+        .comment:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+        .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .comment-author { display: flex; align-items: center; gap: 10px; }
+        .comment-avatar { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: #fff; }
+        .avatar-user { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+        .avatar-admin { background: linear-gradient(135deg, #f43f5e, #fb7185); }
+        .comment-name { font-weight: 700; font-size: 0.9rem; }
+        .comment-role { font-size: 0.7rem; padding: 2px 8px; border-radius: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .role-admin { background: rgba(244,63,94,0.1); color: #f43f5e; }
+        .role-user { background: rgba(124,58,237,0.1); color: #7c3aed; }
+        .comment-time { font-size: 0.78rem; color: #9ca3af; }
+        .comment-body { font-size: 0.9rem; color: #4b5563; line-height: 1.7; }
+
+        .comment.admin-comment { border-left: 3px solid #f43f5e; }
+
+        /* Reply Form */
+        .reply-form { background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.05); border-radius: 20px; padding: 24px; margin-top: 20px; animation: fadeInUp 0.6s ease-out 0.4s both; }
+        .reply-form h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: #4b5563; }
+        .reply-form textarea { width: 100%; padding: 14px 18px; border-radius: 14px; background: rgba(255,255,255,0.6); color: #1e1e2e; border: 1.5px solid rgba(0,0,0,0.1); font-family: 'Inter', sans-serif; font-size: 0.9rem; transition: all 0.3s ease; outline: none; min-height: 100px; resize: vertical; }
+        .reply-form textarea::placeholder { color: #9ca3af; }
+        .reply-form textarea:focus { border-color: #7c3aed; background: rgba(124,58,237,0.04); box-shadow: 0 0 0 4px rgba(124,58,237,0.15); }
+        .reply-btn { padding: 12px 28px; border: none; border-radius: 14px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; }
+        .reply-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.3); }
+
+        .no-comments { text-align: center; padding: 40px; color: #9ca3af; font-size: 0.95rem; }
+        .no-comments i { font-size: 2rem; margin-bottom: 10px; display: block; color: #c4b5fd; }
+
+        @media (max-width: 640px) {
+            .ticket-detail { padding: 24px 20px; }
+            .detail-header { flex-direction: column; }
+            .detail-meta { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <nav>
+        <a href="/" class="logo"><i class="fas fa-headset"></i> HelpDesk</a>
+        <div class="nav-links">
+            <a href="/tickets"><i class="fas fa-ticket-alt"></i> Tickets</a>
+            {% if session.get('role') == 'admin' %}
+            <a href="/admin"><i class="fas fa-shield-alt"></i> Admin</a>
+            {% endif %}
+            <span class="user-badge"><i class="fas fa-user"></i> {{ session.get('user_name', 'Guest') }}</span>
+        </div>
+    </nav>
+
+    <div class="page">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- Ticket Detail -->
+        <div class="ticket-detail priority-{{ ticket.priority|lower }}">
+            <div class="detail-header">
+                <h1><span class="ticket-num">#{{ ticket.id }}</span> Ticket Details</h1>
+                <span class="status-badge status-{{ ticket.status|lower }}">
+                    <span class="status-dot"></span>
+                    {{ ticket.status }}
+                </span>
+            </div>
+
+            <div class="detail-meta">
+                <div class="meta-item">
+                    <i class="fas fa-user"></i>
+                    <div>
+                        <div class="meta-label">Submitted by</div>
+                        <div class="meta-value">{{ ticket.name }}</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <div class="meta-label">Email</div>
+                        <div class="meta-value">{{ ticket.email }}</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-flag"></i>
+                    <div>
+                        <div class="meta-label">Priority</div>
+                        <div class="meta-value"><span class="priority-badge priority-{{ ticket.priority|lower }}">{% if ticket.priority == 'High' %}🔴{% elif ticket.priority == 'Medium' %}🟡{% else %}🟢{% endif %} {{ ticket.priority }}</span></div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-folder"></i>
+                    <div>
+                        <div class="meta-label">Category</div>
+                        <div class="meta-value"><span class="category-badge">{{ ticket.category }}</span></div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <div class="meta-label">Created</div>
+                        <div class="meta-value">{{ ticket.created_at }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="issue-block">
+                <h3><i class="fas fa-comment-dots"></i> Issue Description</h3>
+                <div class="issue-text">{{ ticket.issue }}</div>
+            </div>
+
+            <div class="detail-actions">
+                {% if ticket.status == "Open" %}
+                <a href="/close/{{ ticket.id }}" class="btn-close-ticket"><i class="fas fa-check"></i> Close Ticket</a>
+                {% else %}
+                <a href="/reopen/{{ ticket.id }}" class="btn-reopen"><i class="fas fa-redo"></i> Reopen Ticket</a>
+                {% endif %}
+                <a href="/delete/{{ ticket.id }}" class="btn-delete" onclick="return confirm('Delete ticket #{{ ticket.id }}?')"><i class="fas fa-trash"></i> Delete</a>
+                <a href="/tickets" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Tickets</a>
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h2><i class="fas fa-comments"></i> Comments <span class="count">{{ comments|length }}</span></h2>
+
+            {% if comments %}
+                {% for c in comments %}
+                <div class="comment {{ 'admin-comment' if c.user_role == 'admin' }}" style="animation-delay: {{ loop.index0 * 0.08 }}s;">
+                    <div class="comment-header">
+                        <div class="comment-author">
+                            <div class="comment-avatar {{ 'avatar-admin' if c.user_role == 'admin' else 'avatar-user' }}">
+                                {{ c.user_name[0]|upper }}
+                            </div>
+                            <div>
+                                <div class="comment-name">{{ c.user_name }} <span class="comment-role {{ 'role-admin' if c.user_role == 'admin' else 'role-user' }}">{{ c.user_role }}</span></div>
+                            </div>
+                        </div>
+                        <div class="comment-time"><i class="fas fa-clock"></i> {{ c.created_at }}</div>
+                    </div>
+                    <div class="comment-body">{{ c.message }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-comments">
+                    <i class="fas fa-comment-slash"></i>
+                    No comments yet. Start the conversation below!
+                </div>
+            {% endif %}
+
+            <!-- Reply Form -->
+            <div class="reply-form">
+                <h3><i class="fas fa-reply"></i> Add a Comment</h3>
+                <form method="POST" action="/ticket/{{ ticket.id }}/comment">
+                    <textarea name="message" placeholder="Type your reply here..." required></textarea>
+                    <button type="submit" class="reply-btn"><i class="fas fa-paper-plane"></i> Post Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.flash').forEach(el => {
+            setTimeout(() => { el.style.transition = 'all 0.5s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 500); }, 4000);
+        });
+    </script>
+</body>
+</html>

@@ -11,13 +11,13 @@
         body {
             font-family: 'Inter', sans-serif;
             min-height: 100vh; overflow-x: hidden;
-            background: #0a0a1a; color: #fff;
+            background: #f8f9fc; color: #1e1e2e;
         }
 
         /* ── Background ── */
         .bg-gradient {
             position: fixed; inset: 0; z-index: -2;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e, #0f0c29);
+            background: linear-gradient(135deg, #e8e0f7, #d5e8f7, #f0e6f6, #e8e0f7);
             background-size: 400% 400%;
             animation: gradientShift 12s ease infinite;
         }
@@ -27,8 +27,8 @@
             100% { background-position: 0% 50%; }
         }
         .orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.35; animation: orbFloat 8s ease-in-out infinite; }
-        .orb-1 { width: 350px; height: 350px; background: #7c3aed; top: -80px; right: -80px; }
-        .orb-2 { width: 300px; height: 300px; background: #06b6d4; bottom: -60px; left: -60px; animation-delay: -4s; }
+        .orb-1 { width: 350px; height: 350px; background: #c4b5fd; top: -80px; right: -80px; }
+        .orb-2 { width: 300px; height: 300px; background: #a5f3fc; bottom: -60px; left: -60px; animation-delay: -4s; }
         @keyframes orbFloat {
             0%, 100% { transform: translate(0,0) scale(1); }
             50% { transform: translate(20px,-20px) scale(1.05); }
@@ -37,8 +37,8 @@
         /* ── Navbar ── */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            backdrop-filter: blur(20px); background: rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px); background: rgba(255,255,255,0.75);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
             padding: 1rem 2rem;
             display: flex; justify-content: space-between; align-items: center;
             animation: slideDown 0.8s ease-out;
@@ -53,10 +53,10 @@
         .logo i { -webkit-text-fill-color: #7c3aed; font-size: 1.6rem; }
         .nav-links { display: flex; gap: 8px; }
         .nav-links a {
-            padding: 10px 22px; border-radius: 12px; text-decoration: none; color: #c4b5fd;
+            padding: 10px 22px; border-radius: 12px; text-decoration: none; color: #6b7280;
             font-weight: 500; font-size: 0.9rem; transition: all 0.3s ease; border: 1px solid transparent;
         }
-        .nav-links a:hover { color: #fff; background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.3); transform: translateY(-2px); }
+        .nav-links a:hover { color: #7c3aed; background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.2); transform: translateY(-2px); }
 
         /* ── Main ── */
         .page-wrapper {
@@ -65,10 +65,11 @@
         }
         .form-container {
             width: 100%; max-width: 580px;
-            background: rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.8);
             backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(0,0,0,0.06);
             border-radius: 28px; padding: 48px; position: relative; overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.06);
             animation: scaleIn 0.6s ease-out;
         }
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.92) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
@@ -90,7 +91,7 @@
         }
         @keyframes iconPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
         .form-header h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
-        .form-header p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        .form-header p { color: #6b7280; font-size: 0.9rem; }
 
         /* ── Form Fields ── */
         .form-group {
@@ -106,7 +107,7 @@
 
         .form-group label {
             display: flex; align-items: center; gap: 8px;
-            font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.7);
+            font-size: 0.85rem; font-weight: 600; color: #4b5563;
             margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
         }
         .form-group label i { color: #7c3aed; font-size: 0.8rem; }
@@ -115,22 +116,22 @@
         .form-group textarea,
         .form-group select {
             width: 100%; padding: 14px 18px; border-radius: 14px;
-            background: rgba(255,255,255,0.06); color: #fff;
-            border: 1.5px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.6); color: #1e1e2e;
+            border: 1.5px solid rgba(0,0,0,0.1);
             font-family: 'Inter', sans-serif; font-size: 0.95rem;
             transition: all 0.3s ease; outline: none;
         }
         .form-group input::placeholder,
-        .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+        .form-group textarea::placeholder { color: #9ca3af; }
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
             border-color: #7c3aed;
-            background: rgba(124,58,237,0.08);
+            background: rgba(124,58,237,0.04);
             box-shadow: 0 0 0 4px rgba(124,58,237,0.15);
         }
         .form-group textarea { min-height: 120px; resize: vertical; }
-        .form-group select option { background: #1a1a2e; color: #fff; }
+        .form-group select option { background: #fff; color: #1e1e2e; }
 
         /* Priority selector */
         .priority-options {
@@ -143,7 +144,7 @@
         .priority-option label {
             display: flex; flex-direction: column; align-items: center; gap: 6px;
             padding: 16px 10px; border-radius: 14px; cursor: pointer;
-            background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.5); border: 1.5px solid rgba(0,0,0,0.08);
             transition: all 0.3s ease; text-transform: none; letter-spacing: 0; font-size: 0.85rem;
             justify-content: center;
         }
@@ -154,7 +155,7 @@
         .priority-option:nth-child(1) input:checked + label { border-color: #22c55e; background: rgba(34,197,94,0.12); color: #4ade80; }
         .priority-option:nth-child(2) input:checked + label { border-color: #f59e0b; background: rgba(245,158,11,0.12); color: #fbbf24; }
         .priority-option:nth-child(3) input:checked + label { border-color: #ef4444; background: rgba(239,68,68,0.12); color: #f87171; }
-        .priority-option label:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+        .priority-option label:hover { background: rgba(124,58,237,0.06); transform: translateY(-2px); }
 
         /* Submit Button */
         .submit-btn {
@@ -178,7 +179,7 @@
 
         .back-link {
             display: block; text-align: center; margin-top: 20px;
-            color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.9rem;
+            color: #9ca3af; text-decoration: none; font-size: 0.9rem;
             transition: color 0.3s; opacity: 0; animation: fadeInUp 0.5s ease-out 0.8s forwards;
         }
         .back-link:hover { color: #a78bfa; }
@@ -199,6 +200,10 @@
         <div class="nav-links">
             <a href="/"><i class="fas fa-home"></i> Home</a>
             <a href="/tickets"><i class="fas fa-ticket-alt"></i> Tickets</a>
+            {% if session.get('role') == 'admin' %}
+            <a href="/admin"><i class="fas fa-shield-alt"></i> Admin</a>
+            {% endif %}
+            <a href="/logout" style="color:#f43f5e;"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </nav>
 
@@ -212,16 +217,18 @@
 
             <form method="POST" id="ticketForm">
                 <div class="form-group">
-                    <label><i class="fas fa-user"></i> Your Name</label>
-                    <input type="text" name="name" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-envelope"></i> Email Address</label>
-                    <input type="email" name="email" placeholder="john@example.com" required>
-                </div>
-                <div class="form-group">
                     <label><i class="fas fa-comment-dots"></i> Describe the Issue</label>
                     <textarea name="issue" placeholder="Tell us what happened..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-folder"></i> Category</label>
+                    <select name="category" required>
+                        <option value="General">General</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Billing">Billing</option>
+                        <option value="Account">Account</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-flag"></i> Priority Level</label>
